@@ -55,17 +55,31 @@ const app = (() => {
   }
 
   function allFlags(promiseList) {
-
-    // use promise.all
-
+    return Promise.all(promiseList).then(values => values).catch(returnFalse);
   }
 
 
-  // call the allFlags function
+  var promises = [
+    getImageName('Spain'),
+    getImageName('Chile'),
+    getImageName('Peru')
+  ];
 
+  allFlags(promises).then(function (result) {
+    console.log(result);
+  });
 
-  // use Promise.race
+  const promise1 = new Promise((resolve, reject) => {
+    setTimeout(resolve, 500, 'one');
+  });
 
+  const promise2 = new Promise((resolve, reject) => {
+    setTimeout(reject, 100, 'two');
+  });
+
+  Promise.race([promise1, promise2])
+    .then(logSuccess)
+    .catch(logError);
 
   /* Helper functions */
 
